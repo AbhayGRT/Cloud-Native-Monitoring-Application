@@ -1,6 +1,6 @@
 # Cloud-Native-Monitoring-Application
 Deploying Flask Monitoring Application in Kubernetes Cluster
-
+![image](./image.png)
 Prerequisites
 Before you begin, ensure you have the following:
 
@@ -15,11 +15,13 @@ Steps to deploy:
 3. Log in to Amazon ECR
 4. Build the Docker image for the Flask monitoring application
 5. Push the Docker image to Amazon ECR
-6. Create Amazon EKS Cluster
-7. Deploy the Flask Monitoring Application to Kubernetes
-8. Expose the Application
-9. Access the Monitoring Application
-
+  ![image](./ECS.png) 
+7. Create Amazon EKS Cluster
+ ![image](./EKS.png)
+9. Deploy the Flask Monitoring Application to Kubernetes
+10. Expose the Application
+11. Access the Monitoring Application
+![image](./course_at_3138_image.png)
 
 Congratulations! You have successfully deployed a Flask monitoring application in your Amazon EKS Kubernetes cluster, </br>
 utilizing Amazon ECS for storing the Docker image. The application allows you to monitor the cluster's health using CPU and Memory utilization gauges.</br>
