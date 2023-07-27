@@ -1,0 +1,121 @@
+tribal@tribal-XPS-15-7590:~$ aws configure
+AWS Access Key ID [****************X7NA]: AKIAQPMTCHZSWMNP4TID
+AWS Secret Access Key [****************c6nV]: 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
+Default region name [ap-south-1]: 
+Default output format [json]: 
+tribal@tribal-XPS-15-7590:~$ aws configure
+AWS Access Key ID [****************4TID]: AKIAQPMTCHZSWMNP4TID
+AWS Secret Access Key [****************eqnc]: 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
+Default region name [ap-south-1]: 
+Default output format [json]: 
+tribal@tribal-XPS-15-7590:~$ aws iam list-users
+{
+    "Users": []
+}
+tribal@tribal-XPS-15-7590:~$ cd Desktop
+tribal@tribal-XPS-15-7590:~/Desktop$ cd cloud_native_monitoring_application/
+tribal@tribal-XPS-15-7590:~/Desktop/cloud_native_monitoring_application$ code .
+tribal@tribal-XPS-15-7590:~/Desktop/cloud_native_monitoring_application$ aws eks update-kubeconfig --name cloud-native-cluster
+Added new context arn:aws:eks:ap-south-1:033057554021:cluster/cloud-native-cluster to /home/tribal/.kube/config
+tribal@tribal-XPS-15-7590:~/Desktop/cloud_native_monitoring_application$ kubectl get ns
+NAME              STATUS   AGE
+default           Active   84m
+kube-node-lease   Active   84m
+kube-public       Active   84m
+kube-system       Active   84m
+tribal@tribal-XPS-15-7590:~/Desktop/cloud_native_monitoring_application$ kubectl get pods -n default
+No resources found in default namespace.
+tribal@tribal-XPS-15-7590:~/Desktop/cloud_native_monitoring_application$ cd .kube/c
+bash: cd: .kube/c: No such file or directory
+tribal@tribal-XPS-15-7590:~/Desktop/cloud_native_monitoring_application$ kubectl get svc -n default
+NAME         TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+kubernetes   ClusterIP   10.100.0.1   <none>        443/TCP   85m
+tribal@tribal-XPS-15-7590:~/Desktop/cloud_native_monitoring_application$ kubectl get pods -n default -w
+NAME                            READY   STATUS    RESTARTS   AGE
+my-flask-app-5f87fd5875-r4rc5   1/1     Running   0          35s
+^Ctribal@tribal-XPS-15-7590:~/Desktop/cloud_native_monitoring_application$ kubectl get deployment -n default
+NAME           READY   UP-TO-DATE   AVAILABLE   AGE
+my-flask-app   1/1     1            1           77s
+tribal@tribal-XPS-15-7590:~/Desktop/cloud_native_monitoring_application$ kubectl get svc -n default
+NAME               TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+kubernetes         ClusterIP   10.100.0.1      <none>        443/TCP    91m
+my-flask-service   ClusterIP   10.100.44.116   <none>        5000/TCP   105s
+tribal@tribal-XPS-15-7590:~/Desktop/cloud_native_monitoring_application$ kubectl get pods -n default -w
+NAME                            READY   STATUS    RESTARTS   AGE
+my-flask-app-5f87fd5875-r4rc5   1/1     Running   0          2m13s
+^Ctribal@tribal-XPS-15-7590:~/Desktop/cloud_native_monitoring_application$ kubectl describe pods my-flask-app-5f87fd5875-r4rc5 -n default
+Name:             my-flask-app-5f87fd5875-r4rc5
+Namespace:        default
+Priority:         0
+Service Account:  default
+Node:             ip-172-31-47-172.ap-south-1.compute.internal/172.31.47.172
+Start Time:       Wed, 26 Jul 2023 21:58:20 +0530
+Labels:           app=my-flask-app
+                  pod-template-hash=5f87fd5875
+Annotations:      <none>
+Status:           Running
+IP:               172.31.44.214
+IPs:
+  IP:           172.31.44.214
+Controlled By:  ReplicaSet/my-flask-app-5f87fd5875
+Containers:
+  my-flask-container:
+    Container ID:   containerd://ef0f443731770ded15d6463ebeeb48d4e0fddc0ccead327c7447958a0952f805
+    Image:          033057554021.dkr.ecr.ap-south-1.amazonaws.com/my_monitoring_app_image:latest
+    Image ID:       033057554021.dkr.ecr.ap-south-1.amazonaws.com/my_monitoring_app_image@sha256:8144db4309eaf013b831a5949b3f19a6617678c5259bee48e0b9a8efec39e8ac
+    Port:           5000/TCP
+    Host Port:      0/TCP
+    State:          Running
+      Started:      Wed, 26 Jul 2023 21:58:52 +0530
+    Ready:          True
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-qb9gx (ro)
+Conditions:
+  Type              Status
+  Initialized       True 
+  Ready             True 
+  ContainersReady   True 
+  PodScheduled      True 
+Volumes:
+  kube-api-access-qb9gx:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    ConfigMapOptional:       <nil>
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type    Reason     Age    From               Message
+  ----    ------     ----   ----               -------
+  Normal  Scheduled  2m54s  default-scheduler  Successfully assigned default/my-flask-app-5f87fd5875-r4rc5 to ip-172-31-47-172.ap-south-1.compute.internal
+  Normal  Pulling    2m53s  kubelet            Pulling image "033057554021.dkr.ecr.ap-south-1.amazonaws.com/my_monitoring_app_image:latest"
+  Normal  Pulled     2m22s  kubelet            Successfully pulled image "033057554021.dkr.ecr.ap-south-1.amazonaws.com/my_monitoring_app_image:latest" in 30.510322241s (30.510335972s including waiting)
+  Normal  Created    2m22s  kubelet            Created container my-flask-container
+  Normal  Started    2m22s  kubelet            Started container my-flask-container
+tribal@tribal-XPS-15-7590:~/Desktop/cloud_native_monitoring_application$ kubectl get deployment -n default
+NAME           READY   UP-TO-DATE   AVAILABLE   AGE
+my-flask-app   1/1     1            1           4m7s
+tribal@tribal-XPS-15-7590:~/Desktop/cloud_native_monitoring_application$ kubectl edit deployment my-flask-app
+ Edit cancelled, no changes made.
+tribal@tribal-XPS-15-7590:~/Desktop/cloud_native_monitoring_application$ kubectl get pods -n default -ww
+^[[ANAME                            READY   STATUS    RESTARTS   AGE
+my-flask-app-5f87fd5875-r4rc5   1/1     Running   0          6m4s
+^[[A^[[A^[[A^[[B^[[B^Ctribal@tribal-XPS-15-7590:~/Desktop/cloud_native_monitoring_application$ kubectl get pods -n default -w
+NAME                            READY   STATUS    RESTARTS   AGE
+my-flask-app-5f87fd5875-r4rc5   1/1     Running   0          6m20s
+^Ctribal@tribal-XPS-15-7590:~/Desktop/cloud_native_monitoring_application$ kubectl get svc -n default
+NAME               TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+kubernetes         ClusterIP   10.100.0.1      <none>        443/TCP    96m
+my-flask-service   ClusterIP   10.100.44.116   <none>        5000/TCP   6m43s
+tribal@tribal-XPS-15-7590:~/Desktop/cloud_native_monitoring_application$ kubectl port-forward svc/my-flask-service 5000:5000
+Forwarding from 127.0.0.1:5000 -> 5000
+Forwarding from [::1]:5000 -> 5000
+Handling connection for 5000
+Handling connection for 5000
+^Ctribal@tribal-XPS-15-7590:~/Desktop/cloud_native_monitoring_application$ 
+
